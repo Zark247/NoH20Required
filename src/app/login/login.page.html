@@ -1,12 +1,38 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot = "start">
+    <ion-title>Log In</ion-title>
+    <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>login</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="signUp()">Sign Up</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <!--
+  <form (NgSubmit)="login(form.value)">
+    <ion-item>
+      <ion-label color="primary" position="floating">Email</ion-label>
+      <ion-input type="email" ([NgModel])="email" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Password</ion-label>
+      <ion-input type="password" (NgModel)="password" required></ion-input>
+    </ion-item>
+    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!form.valid">Login</ion-button>
+  </form>
+-->
+<form [formGroup]="new_user_form" (submit)="login(new_user_form.value)">
+  <ion-item>
+    <ion-label color="primary" position="floating">Email</ion-label>
+    <ion-input type="email" formControlName="email" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Password</ion-label>
+    <ion-input type="password" formControlName="password" required></ion-input>
+  </ion-item>
+  <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!new_user_form.valid">Login</ion-button>
+</form>
 </ion-content>

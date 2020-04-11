@@ -55,7 +55,13 @@ export class HomePage {
     //var user = firebase.auth().currentUser;
     // this.pService.orders = [];
     // this.pService.setUsertype("null");
-    
-   
+  }
+
+  login() {
+    if (firebase.auth().currentUser == null){
+      this.router.navigate(["/login"])
+    } else {
+      alert("You are already logged in.")
+    }
   }
 }
