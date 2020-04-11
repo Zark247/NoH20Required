@@ -11,19 +11,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!--
-  <form (NgSubmit)="login(form.value)">
-    <ion-item>
-      <ion-label color="primary" position="floating">Email</ion-label>
-      <ion-input type="email" ([NgModel])="email" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label color="primary" position="floating">Password</ion-label>
-      <ion-input type="password" (NgModel)="password" required></ion-input>
-    </ion-item>
-    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!form.valid">Login</ion-button>
-  </form>
--->
 <form [formGroup]="new_user_form" (submit)="login(new_user_form.value)">
   <ion-item>
     <ion-label color="primary" position="floating">Email</ion-label>
@@ -35,4 +22,5 @@
   </ion-item>
   <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!new_user_form.valid">Login</ion-button>
 </form>
+  <ion-button class="submit-btn" expand="block" (click)="loginGoogle()">Google Login</ion-button>
 </ion-content>

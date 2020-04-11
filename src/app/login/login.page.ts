@@ -63,5 +63,16 @@ export class LoginPage implements OnInit {
       this.router.navigate("/home")
     })
   }
+
+  loginGoogle() {
+    let provider = new firebase.auth.GoogleAuthProvider()
+    provider.addScope('profile')
+    provider.addScope('email')
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      let token = result.credential.providerId
+      let user = result.user
+      this.router.navigate(['/home'])
+    })
+  }
   
 }
