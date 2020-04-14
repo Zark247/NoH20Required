@@ -46,16 +46,24 @@ export class HomePage {
 
   logOut() {
     var self = this;
-    firebase.auth().signOut().then(function() {
-      console.log("Logout Successful");
-      self.router.navigate(['/login']);
-    }).catch(function(error){
-      console.error("Error upon logging out: ", error);
-    });
-    //var user = firebase.auth().currentUser;
-    // this.pService.orders = [];
-    // this.pService.setUsertype("null");
-    
-   
+    if (firebase.auth().currentUser == null){
+      console.log("You were not logged in, directing to log in.")
+      this.router.navigate(["/login"])
+    } else {
+      firebase.auth().signOut().then(function() {
+        console.log("Logout Successful, directing to log in.");
+        self.router.navigate(['/login']);
+     }).catch(function(error){
+        console.error("Error upon logging out: ", error)
+     })
+    }
+  }
+
+  login() {
+    if (firebase.auth().currentUser == null){
+      this.router.navigate(["/login"])
+    } else {
+      alert("You are already logged in.")
+    }
   }
 }
