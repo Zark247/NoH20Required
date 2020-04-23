@@ -1,5 +1,7 @@
 {
   "name": "drinkconsumption_finalproject",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

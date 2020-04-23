@@ -1,12 +1,37 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot = "start">
+  	<ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>signup</ion-title>
+    
+    <ion-title>Sign Up</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class = "ion-padding">
+
+  <ion-item>
+    <ion-label color="primary" position="floating">First Name</ion-label>
+    <ion-input type="text" [(ngModel)]="firstName" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Last Name</ion-label>
+    <ion-input type="text" [(ngModel)]="lastName" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Birth Date</ion-label>
+    <ion-datetime (ionChange) = "calcAge()" [(ngModel)]="birthDate"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Email</ion-label>
+    <ion-input type="text" [(ngModel)]="user.email" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Password</ion-label>
+    <ion-input type="text" [(ngModel)]="user.password" required></ion-input>
+  </ion-item>
+
+
+  <ion-button class="submit-btn" expand="block" type="submit" (click)="doSignup()">Sign up</ion-button>
 
 </ion-content>
