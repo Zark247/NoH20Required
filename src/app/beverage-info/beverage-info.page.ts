@@ -30,7 +30,6 @@ export class BeverageInfoPage implements OnInit {
         this.drink_detail_form.patchValue({percentage:this.current_drink.percentage})
         this.drink_detail_form.patchValue({description:this.current_drink.description})
       })
-    console.log("Description: ", this.current_drink.description)
   }
 
 }

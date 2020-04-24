@@ -44,45 +44,45 @@ export class SignupPage implements OnInit {
   	console.log(this.user.email+"  "+this.user.password)
   	var email=this.user.email;
   	var password=this.user.password;
-  	var self=this;
-  	firebase.auth().createUserWithEmailAndPassword(email, password).catch(
-  		function(error) {
-	  		console.log(error);
-	  		var errorCode = error.code;
-	  		var errorMessage = error.message;
-	  		console.log(error.message);
-	  		if(errorCode.length > 0){
-	  			console.log("Failed");
-	  		}
-	  		else{
-	  			console.log("signup ok")
-	  		}
-	  // ...
-	}).then(function(result){
+	var self=this;
+	if(self.age <= 21) {
+		console.log("Underage user.")
+		alert("Underage user.")
+		self.router.navigate(["/home"])
+	} else {
+  		firebase.auth().createUserWithEmailAndPassword(email, password).catch(
+  			function(error) {
+	  			console.log(error);
+	  			var errorCode = error.code;
+	  			var errorMessage = error.message;
+	  			console.log(error.message);
+	  			if(errorCode.length > 0){
+	  				console.log("Failed");
+	  			}
+	  			else{
+	  				console.log("signup ok")
+	  			}
+		}).then(function(result){
 			var user= firebase.auth().currentUser;
-			 var db = firebase.firestore();
-		     db.collection("users").add({
+			var db = firebase.firestore();
+		    db.collection("users").add({
 				'uid':user.uid,
 				'firstName':self.firstName,
 				'lastName':self.lastName,
 				'birthDate':self.birthDate,
 				'age':self.age,
-		     })
-		      .then(function(docRef) {
-		        console.log("usetype written with ID: ", docRef.id);
-
-		          //update this products arrays
+		    })
+		    .then(function(docRef) {
+		    	console.log("usetype written with ID: ", docRef.id);
 		      })
 		      .catch(function(error) {
 		          console.error("Error adding document: ", error);
 		      });
-
-		  	console.log("finished creating account")
-		  	console.log(user.uid)
-		  	self.router.navigate(["/login"]);
-	});
-
-
-  }
+		console.log("finished creating account")
+		console.log(user.uid)
+		self.router.navigate(["/login"]);
+		});
+	}
+}
 
 }
