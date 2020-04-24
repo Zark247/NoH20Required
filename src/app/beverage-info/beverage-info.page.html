@@ -7,19 +7,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content padding>
   <ion-item>
     <ion-label color="primary">Name</ion-label>
-    <ion-input [(ngModel)]="current_drink.name" disabled="true"></ion-input>
+      <!-- <p class = "align_name" >{{ current_drink.name }}</p> -->
+   <ion-input [(ngModel)]="current_drink.name" readonly></ion-input>
   </ion-item>
   <ion-item>
     <ion-label color="primary">Percentage</ion-label>
-    <ion-input [(ngModel)]="current_drink.percentage" disabled="true"></ion-input>
+    <!-- <p class = "align_prc" >{{ current_drink.percentage }}</p> -->
+    <ion-input [(ngModel)]="current_drink.percentage" readonly></ion-input>
   </ion-item>
-  <!--
+  <ion-img [src]="current_drink.img" style= "width : 400px; height : 400px;"></ion-img>
   <ion-item>
-    <ion-label color="primary">Description</ion-label>
-    <ion-input [(ngModel)]="current_drink.description" disabled="true"></ion-input>
+    <ion-label color="primary" position = "stacked">Description</ion-label>
+   <ion-textarea> {{ current_drink.description }}</ion-textarea>
+    <!-- <ion-label >{{ current_drink.description }}</ion-label> -->
   </ion-item>
--->
+
 </ion-content>
