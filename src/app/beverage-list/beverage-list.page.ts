@@ -23,6 +23,7 @@ export class BeverageListPage implements OnInit {
   }
 
   ngOnInit() {
+    this.beverageService.refresh()
   }
 
 }
