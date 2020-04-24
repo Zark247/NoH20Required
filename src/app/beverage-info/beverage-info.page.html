@@ -3,10 +3,23 @@
     <ion-buttons slot = "start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>beverage-info</ion-title>
+    <ion-title>Beverage Info</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label color="primary">Name</ion-label>
+    <ion-input [(ngModel)]="current_drink.name" disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Percentage</ion-label>
+    <ion-input [(ngModel)]="current_drink.percentage" disabled="true"></ion-input>
+  </ion-item>
+  <!--
+  <ion-item>
+    <ion-label color="primary">Description</ion-label>
+    <ion-input [(ngModel)]="current_drink.description" disabled="true"></ion-input>
+  </ion-item>
+-->
 </ion-content>

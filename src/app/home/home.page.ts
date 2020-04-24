@@ -32,7 +32,14 @@ export class HomePage {
   }
 
   toUser() {
-    this.router.navigate(['/user']);
+    let self = this
+    if(firebase.auth().currentUser == null) {
+      console.log("Not logged in, directing to log in.")
+      alert("Not logged in, directing to log in.")
+      self.router.navigate(["/login"])
+    } else {
+      self.router.navigate(['/user']);
+    }
 
   }
 
@@ -45,10 +52,11 @@ export class HomePage {
   }
 
   logOut() {
-    var self = this;
+    let self = this
     if (firebase.auth().currentUser == null){
-      console.log("You were not logged in, directing to log in.")
-      this.router.navigate(["/login"])
+      console.log("You weren't logged in, directing to log in.")
+      alert("You weren't logged in, directing to log in.")
+      self.router.navigate(["/login"])
     } else {
       firebase.auth().signOut().then(function() {
         console.log("Logout Successful, directing to log in.");
@@ -60,8 +68,9 @@ export class HomePage {
   }
 
   login() {
+    let self = this
     if (firebase.auth().currentUser == null){
-      this.router.navigate(["/login"])
+      self.router.navigate(["/login"])
     } else {
       alert("You are already logged in.")
     }

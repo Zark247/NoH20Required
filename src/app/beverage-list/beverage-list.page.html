@@ -3,10 +3,24 @@
     <ion-buttons slot = "start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>beverage-list</ion-title>
+    <ion-title>Beverage List</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list lines="full">
+    <ion-list>
+      <ion-item *ngFor="let drink of drinks" (click)="goToDrink(drink)">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="drink.img"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+          {{drink.name}}
+        </ion-label>
+        <ion-label>
+          {{drink.percentage}}%
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-list>
 </ion-content>

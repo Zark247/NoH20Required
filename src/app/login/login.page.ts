@@ -17,7 +17,6 @@ export class LoginPage implements OnInit {
     public formBuilder:FormBuilder) { }
 
   ngOnInit() {
-    
     this.new_user_form = this.formBuilder.group({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
@@ -29,6 +28,7 @@ export class LoginPage implements OnInit {
   }
   
   login(user) {
+    let self = this
     let email = user.email
     let password = user.password
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
@@ -47,7 +47,7 @@ export class LoginPage implements OnInit {
     }
     ).then(function(result) {
       let user = firebase.auth().currentUser
-      this.db.collection("usertype").where("uid", "==", user.uid).get().then(function(querySnapshot) {
+      self.db.collection("users").where("uid", "==", user.uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           console.log(doc.id, "=>", doc.data())
           let type = doc.data().usertype
@@ -60,7 +60,7 @@ export class LoginPage implements OnInit {
       })
       console.log("Login successful")
       alert("Login successful")
-      this.router.navigate("/home")
+      self.router.navigate(['/home'])
     })
   }
 
@@ -74,5 +74,4 @@ export class LoginPage implements OnInit {
       this.router.navigate(['/home'])
     })
   }
-  
 }
