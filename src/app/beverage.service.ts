@@ -81,7 +81,7 @@ export class BeverageService {
           percentage: drink.percentage,
           img: drink.img,
           description : drink.description,
-         
+          oz: drink.oz,
         })
       })
       self.publishEvent({})
@@ -102,7 +102,7 @@ export class BeverageService {
   // getCart(){
   //   return this.cart;
   // }
-  addToCart(name, img, percentage, description){
+  addToCart(name, img, percentage, description,oz){
     var self = this;
     if(firebase.auth().currentUser != null) {
       let uid = firebase.auth().currentUser.uid
@@ -111,6 +111,7 @@ export class BeverageService {
         'img':img,
         'percentage':percentage,
         'description':description,
+        'oz':oz,
         'uid': uid
       }).then(function(docRef){
         console.log("Document written with ID: ", docRef.id);
@@ -133,6 +134,7 @@ export class BeverageService {
           percentage: cart.percentage,
           img: cart.img,
           description : cart.description,
+          oz: cart.oz,
           uid: cart.uid,
           docID: doc.id
         })

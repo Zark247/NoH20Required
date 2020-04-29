@@ -18,7 +18,8 @@ export class BeverageInfoPage implements OnInit {
       name: new FormControl(),
       img: new FormControl(),
       percentage: new FormControl(),
-      description: new FormControl()
+      description: new FormControl(),
+      oz: new FormControl(),
     })
     
    }
@@ -31,12 +32,13 @@ export class BeverageInfoPage implements OnInit {
         this.drink_detail_form.patchValue({img:this.current_drink.img})
         this.drink_detail_form.patchValue({percentage:this.current_drink.percentage})
         this.drink_detail_form.patchValue({description:this.current_drink.description})
+        this.drink_detail_form.patchValue({oz:this.current_drink.oz})
       })
   }
 
   placeInCart(){
     // if(firebase.auth().currentUser != null){
-      this.beverageService.addToCart(this.current_drink.name, this.current_drink.img, this.current_drink.percentage, this.current_drink.description);
+      this.beverageService.addToCart(this.current_drink.name, this.current_drink.img, this.current_drink.percentage, this.current_drink.description, this.current_drink.oz);
       console.log(this.current_drink.name + " added to cart");
       this.goToCart();
     //}
