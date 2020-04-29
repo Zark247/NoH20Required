@@ -10,6 +10,10 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 
+//added for location
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 //added for the signup page
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -42,7 +46,9 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    GoogleMaps,
+    Geolocation
   ],
   bootstrap: [AppComponent]
 })
