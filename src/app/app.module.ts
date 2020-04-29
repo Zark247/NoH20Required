@@ -19,8 +19,9 @@ import 'chartjs-plugin-zoom';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+import { AngularFirestore } from '@angular/fire/firestore';
 //added for the signup page
-// import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -41,9 +42,10 @@ const firebaseConfig = {
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
 
+
     //added for the signup page
-    FormsModule
-    // AngularFireModule.initializeApp(firebaseConfig),
+    FormsModule,
+    AngularFireModule.initializeApp(firebaseConfig),
     // AngularFirestoreModule,
     // AngularFireAuthModule,
     // AngularFireStorageModule
@@ -55,7 +57,9 @@ const firebaseConfig = {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     GoogleMaps,
-    Geolocation
+    Geolocation,
+    AngularFirestore,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

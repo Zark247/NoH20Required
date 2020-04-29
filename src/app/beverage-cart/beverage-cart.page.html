@@ -10,17 +10,31 @@
 <ion-content>
   <ion-list lines="full">
     <ion-list>
-      <ion-item *ngFor="let cart of carts">
-        <ion-thumbnail slot="start">
-          <ion-img [src]="cart.img"></ion-img>
-        </ion-thumbnail>
-        <ion-label>
-          {{cart.name}}
-        </ion-label>
-        <ion-label>
-          {{cart.percentage}}%
-        </ion-label>
-      </ion-item>
+      <ion-item-sliding *ngFor="let cart of carts">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-img [src]="cart.img"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            {{cart.name}}
+          </ion-label>
+          <ion-label>
+            {{cart.percentage}}%
+          </ion-label>
+          <ion-label>
+            {{cart.oz}} oz
+          </ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" expandable (click) = "deleteDrink(cart.docID, carts)">
+            <ion-icon name="close"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </ion-list>
 </ion-content>
+
+<ion-footer no-shadow>
+	<ion-button  expand="block" (click)="clearCart()">Last Call</ion-button>
+</ion-footer>

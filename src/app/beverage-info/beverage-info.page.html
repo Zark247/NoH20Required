@@ -23,6 +23,10 @@
     <!-- <p class = "align_prc" >{{ current_drink.percentage }}</p> -->
     <ion-input [(ngModel)]="current_drink.percentage" readonly></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label color="primary">Ounces</ion-label>
+    <ion-input [(ngModel)]="current_drink.oz" readonly></ion-input>
+  </ion-item>
   <ion-img [src]="current_drink.img" style= "width : 400px; height : 400px;"></ion-img>
   <ion-item>
     <ion-label color="primary" position = "stacked">Description</ion-label>

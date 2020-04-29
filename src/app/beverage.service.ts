@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { Observable, Subject } from 'rxjs';
 import * as firebase from 'firebase';
+
 import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 
@@ -76,6 +77,7 @@ export class BeverageService {
     }
   }
 
+  
   /**********************************************
    * Using the Widmark BAC estimation equation:
    * BAC = ( (A * 5.14) / (W * r)) - .015*H
@@ -120,7 +122,8 @@ export class BeverageService {
           name: drink.name,
           percentage: drink.percentage,
           img: drink.img,
-          description : drink.description
+          description : drink.description,
+          oz: drink.oz,
         })
       })
       self.publishEvent({})
@@ -141,7 +144,7 @@ export class BeverageService {
   // getCart(){
   //   return this.cart;
   // }
-  addToCart(name, img, percentage, description){
+  addToCart(name, img, percentage, description,oz){
     var self = this;
     if(firebase.auth().currentUser != null) {
       let uid = firebase.auth().currentUser.uid
@@ -150,6 +153,7 @@ export class BeverageService {
         'img':img,
         'percentage':percentage,
         'description':description,
+        'oz':oz,
         'uid': uid
       }).then(function(docRef){
         console.log("Document written with ID: ", docRef.id);
@@ -213,7 +217,7 @@ export class BeverageService {
   }
 
   async cartRefresh() {
-    let self = this
+    let self = this;
     await self.db.collection("cart").where("uid", "==", firebase.auth().currentUser.uid)
       .onSnapshot(function(querySnapshot) {
       self.cart = []
@@ -224,13 +228,48 @@ export class BeverageService {
           percentage: cart.percentage,
           img: cart.img,
           description : cart.description,
+          oz: cart.oz,
           uid: cart.uid,
-          docId: doc.id
+          docID: doc.id
         })
       })
       self.publishEvent({})
       console.log("Beverage cart loaded for: " +firebase.auth().currentUser.uid)
     })
+  }
+
+  async clearCart(){
+    let self = this;
+    self.db.collection('cart').where('uid', '==', firebase.auth().currentUser.uid).get()
+  .then(function(querySnapshot) {
+        // Once we get the results, begin a batch
+        var batch = self.db.batch();
+
+        querySnapshot.forEach(function(doc) {
+            // For each doc, add a delete operation to the batch
+            batch.delete(doc.ref);
+        });
+
+        // Commit the batch
+        return batch.commit();
+  }).then(function() {
+      // Delete completed!
+      // ...
+  }); 
+
+  }
+  
+  deleteDrink(id){
+
+      var self = this;
+      var db = firebase.firestore();
+
+      db.collection("cart").doc(id).delete().then(function(){
+        console.log("Document deleted");
+        console.log("Drink deleted: "+id);
+      }).catch(function(error){
+        console.log("Error removing document: ", error);
+      });
   }
 }
 

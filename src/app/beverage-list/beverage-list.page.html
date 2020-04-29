@@ -8,7 +8,9 @@
 </ion-header>
 
 <ion-content>
+  
   <ion-list lines="full">
+    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
     <ion-list>
       <ion-item *ngFor="let drink of drinks" (click)="goToDrink(drink)">
         <ion-thumbnail slot="start">
@@ -19,6 +21,9 @@
         </ion-label>
         <ion-label>
           {{drink.percentage}}%
+        </ion-label>
+        <ion-label>
+          {{drink.oz}} oz
         </ion-label>
       </ion-item>
     </ion-list>
