@@ -7,31 +7,25 @@
   <ion-content>
     <ion-list>
       <ion-item>
-        <ion-button (click)  = "toBevList()">Beverage List</ion-button> 
+        <ion-button (click)="toBevList()">List</ion-button> 
       </ion-item>
-      <!--
       <ion-item>
-        <ion-button (click) = "toSearch()">Beverage Search</ion-button> 
+        <ion-button (click)="toSearch()">Search</ion-button> 
       </ion-item>
-    -->
       <ion-item>
-        <ion-button (click)  = "toBevCart()">Beverage Cart</ion-button> 
+        <ion-button (click)="toBevCart()">Cart</ion-button> 
       </ion-item>
-      <!--
       <ion-item>
-        <ion-button (click)  = "toUser()">User Details</ion-button> 
+        <ion-button (click)="toUser()">User Details</ion-button> 
       </ion-item>
-    -->
       <ion-item>
-        <ion-button (click)  = "toLocation()">Location</ion-button> 
+        <ion-button (click)="toLocation()">Location</ion-button> 
       </ion-item>
-      <!--
       <ion-item>
-        <ion-button (click)  = "toSettings()">Settings</ion-button> 
+        <ion-button (click)="toSettings()">Settings</ion-button> 
       </ion-item>
-    -->
       <ion-item>
-        <ion-button (click) = "logOut()">Log Out</ion-button> 
+        <ion-button (click)="logOut()">Log Out</ion-button> 
       </ion-item>
     </ion-list>
   </ion-content>
@@ -40,7 +34,7 @@
 <ion-router-outlet id="main"></ion-router-outlet>
 
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>

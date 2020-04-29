@@ -132,6 +132,7 @@ export class HomePage implements OnInit {
     } else {
       firebase.auth().signOut().then(function() {
         console.log("Logout Successful, directing to log in.");
+        alert("Logout successful.")
         self.router.navigate(['/login']);
      }).catch(function(error){
         console.error("Error upon logging out: ", error)

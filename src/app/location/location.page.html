@@ -1,12 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot = "start">
+  <ion-toolbar color="primary">
+    <ion-title>Location</ion-title>
+    <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>location</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="barsNearBy">Bars Near Me</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div id="map" style="height:100%">
+    <!--
+    <select id="mapType">
+      <option value="ROADMAP">Road Map</option>
+      <option value="SATELLITE">Satellite</option>
+      <option value="HYBRID">Hybrid</option>
+      <option value="TErRAIN">Terrain</option>
+    </select>
+    -->
+  </div>
 </ion-content>

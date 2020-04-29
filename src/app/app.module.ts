@@ -15,6 +15,10 @@ import 'chartjs-plugin-zoom';
 // import {Chart} from 'chart.js';
 // import { Ng2GoogleChartsModule, GoogleChartsSettings } from 'ng2-google-charts';
 
+//added for location
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 //added for the signup page
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -47,8 +51,14 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+<<<<<<< HEAD
     // {provide: googleChartsSettings, useValue: MyGoogleChartsSettings},
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+=======
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    GoogleMaps,
+    Geolocation
+>>>>>>> af5a2f1f0705ddb5b878f982febd16a783d8b969
   ],
   bootstrap: [AppComponent]
 })
