@@ -51,11 +51,14 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+<<<<<<< HEAD
     // {provide: googleChartsSettings, useValue: MyGoogleChartsSettings},
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+=======
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     GoogleMaps,
     Geolocation
+>>>>>>> af5a2f1f0705ddb5b878f982febd16a783d8b969
   ],
   bootstrap: [AppComponent]
 })
