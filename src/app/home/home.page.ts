@@ -93,7 +93,14 @@ export class HomePage implements OnInit {
   }
 
   toBevCart() {
-    this.router.navigate(['/beverage-cart']);
+    let self = this
+    if(firebase.auth().currentUser == null) {
+      console.log("Not logged in, directing to log in.")
+      alert("Not logged in, directing to log in.")
+      self.router.navigate(["/login"])
+    } else {
+      self.router.navigate(['/beverage-cart']);
+    }
   }
 
   toUser() {
