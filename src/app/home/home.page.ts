@@ -60,24 +60,75 @@ export class HomePage implements OnInit {
   showLegend = false;
 
 
-  stock = '';
+    
   current_username: any = "Please Log-in";
-  current_user: any = [];
+  current_bac: any = "Please Log-in";
+  current_drinks: any = "Please Log-in";
+  current_timespent:any = "Please Log-in";
+
+  current_user = [];
+  current_user_data = {
+    name:null,
+    BAC:null,
+    drinksDrunk:null,
+    timeDrinking:null
+  };
   db = firebase.firestore();
   
 
   constructor(private router: Router, private sidemenu: MenuController, 
     public bserv: BeverageService, private cref : ChangeDetectorRef ) {
+      this.bserv.getObservable().subscribe((data)=>{
+        console.log("User data received", data);
+        this.current_user = this.bserv.getUserData();
+  
+      })
+
+      this.current_user = this.bserv.users;
 
   }
   ngOnInit(){
-    this.getCurrUser();
+    if(firebase.auth().currentUser != null){
+      this.getCurrUser();
+      this.bserv.dataRefresh();
+      let info = this.bserv.getDrinkingInfo();
+      console.log("setting user info: ")
+      console.log(info.name);
+      console.log(info.BAC);
+      this.current_user_data = {
+        name:info.name,
+        BAC:info.BAC,
+        drinksDrunk:info.drinksDrunk,
+        timeDrinking:info.timeDrinking
+      };
+      this.current_username = this.current_user_data.name;
+      this.setData(); 
+
+    }
     // this.updateChart();
     this.cref.detectChanges();
   }
+  ngOnChanges() {
+    if(firebase.auth().currentUser != null){
+      this.getCurrUser();
+      let info = this.bserv.getDrinkingInfo();
+      this.current_user_data = {
+        name:info.name,
+        BAC:info.BAC,
+        drinksDrunk:info.drinksDrunk,
+        timeDrinking:info.timeDrinking
+      };
+      this.current_username = this.current_user_data.name;
+      this.setData(); 
+
+    }
+  }
 
   ngAfterViewInit(){
-    this.getCurrUser();
+    if(firebase.auth().currentUser != null){
+      this.getCurrUser();
+      this.bserv.dataRefresh();
+    }
   }
 
   openFirst() {
@@ -150,36 +201,62 @@ export class HomePage implements OnInit {
     }
   }
 
-  async getCurrUser() {
-    console.log("IN CURR USER FUNCTION")
-    var usernameid;
-    if(firebase.auth().currentUser != null){
-      let self = this;
-      usernameid = firebase.auth().currentUser.uid
-      await self.db.collection("users").where("uid", "==", usernameid).get().then(function(querySnapshot) {
-        this.current_user = [];
-        querySnapshot.forEach(function(doc) {
-          console.log(doc.id, "=>", doc.data())
-          let userstuff = doc.data();
-          console.log("firstname: ", userstuff.firstName);
-          self.current_user.push = ({
-            firstName: userstuff.firstName,
-            lastName: userstuff.lastName,
-            age: userstuff.age
-          });
-        })
-        
-      }).catch(function(error) {
-        console.log("Error getting documents: ", error)
-        alert("Login failed, try again.")
-      })
-      this.current_user = self.current_user;
-      
+  getCurrUser() {
+    let self = this;
+    this.bserv.dataRefresh()
+    this.current_user = this.bserv.users;
+    let user_uid = firebase.auth().currentUser.uid;
+    this.current_user.forEach(function(u_val) {
+      if(u_val.uid == user_uid){
+        console.log("Found User: ", u_val.firstName)
+        self.current_username = u_val.firstName
+      }
+    });
+  }
+
+  setData() {
+    // Setting data for charts
+    if(firebase.auth().currentUser == null){
+      console.log("Not Logged in to set data")
+    }
+    else if(this.current_user_data == null){
+      console.log("No Data in the Current User Home Page")
+    }
+    else {
+      console.log("Setting Chart Data")
+
+      this.current_bac = this.current_user_data.BAC;
+      this.current_drinks = this.current_user_data.drinksDrunk;
+      this.current_timespent = this.current_user_data.timeDrinking;
+
+
+
     }
     
-    console.log("UserName: ", this.current_user.firstName, " ", this.current_user.lastName)
+
+
   }
+
   doRefresh(event){
+    
+    if(firebase.auth().currentUser != null){
+      this.bserv.dataRefresh();
+      this.getCurrUser();
+      // this.bserv.dataRefresh();
+      // let info = this.bserv.getDrinkingInfo();
+      // this.current_user_data = {
+      //   name:info.name,
+      //   BAC:info.BAC,
+      //   drinksDrunk:info.drinksDrunk,
+      //   timeDrinking:info.timeDrinking
+      // };
+      this.current_user_data = this.bserv.getDrinkingInfo();
+      // this.current_username = this.current_user_data.name;
+      this.setData();    
+      // this.current_username = this.current_user_data.name;
+
+    }
+    
     console.log('Begin async operation');
 
     setTimeout(() => {

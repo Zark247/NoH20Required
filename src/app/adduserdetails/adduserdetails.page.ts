@@ -34,6 +34,7 @@ export class AdduserdetailsPage implements OnInit {
     console.log("First Name: ", value.firstName)
     console.log("Last Name: ", value.lastName)
     this.bserv.addUserData(value.firstName, value.lastName, value.weight, value.gender,value.phoneNumber);
+    console.log("Saved User Information!")
     this.goBack();
   }
 

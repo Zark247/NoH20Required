@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="new_details_form" (submit)="createItem(new_details_form.value)">
+  <form [formGroup]="new_details_form" (submit)="addDetails(new_details_form.value)">
     <ion-item>
       <ion-label color="primary" position = "floating">First Name:</ion-label>
       <ion-input type = "text" formControlName="firstName" required></ion-input>
@@ -18,7 +18,7 @@
       <ion-input type = "text" formControlName="lastName" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label color="primary" position = "floating">Weight:</ion-label>
+      <ion-label color="primary" position = "floating">Weight:(lbs)</ion-label>
       <ion-input type = "text" formControlName="weight" required></ion-input>
     </ion-item>
     <ion-item>

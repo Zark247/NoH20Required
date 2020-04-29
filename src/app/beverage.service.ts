@@ -15,6 +15,8 @@ export class BeverageService {
   drinks:Array<any> = [];
   cart:Array<any> = [];
   users:Array<any> = [];
+  current_user: any = null;
+  // user_data:Array<any> = [];
 
   publishEvent(data:any) {
     this.eventSubject.next(data)
@@ -33,6 +35,45 @@ export class BeverageService {
       }, 1000)
     })
     return drinksObservable
+  }
+
+  getDrinkingInfo(){
+    var self = this;
+    var bac = 0;
+    var drinksConsumed = 0;
+    var hoursDrinking = 0;
+    if(firebase.auth().currentUser != null){
+      console.log("Getting user info")
+      let curr_uid = firebase.auth().currentUser.uid;
+      self.users.forEach(function(u_val){
+        if (u_val.uid == curr_uid){
+          self.current_user = u_val;
+        }
+      })
+      self.publishEvent({})
+      console.log("Current User Set in Service");
+    }
+    if(this.current_user != null && this.cart != null){
+      console.log("Setting user info and doing mathematics")
+      var alc_totalp = 0;
+      this.cart.forEach(function(addperc){
+        alc_totalp = addperc.percentage + alc_totalp;
+        drinksConsumed = drinksConsumed + 1;
+        hoursDrinking = hoursDrinking + 0.45;
+      })
+      bac = this.getBAC(12,alc_totalp, this.current_user.weight, this.current_user.gender, 0.20)
+
+      let drinking_info = {
+        name: this.current_user.firstName,
+        BAC:bac,
+        drinksDrunk:drinksConsumed,
+        timeDrinking:hoursDrinking
+      }
+
+      return drinking_info;
+
+
+    }
   }
 
   /**********************************************
@@ -128,7 +169,7 @@ export class BeverageService {
         'lastName':lastName,
         'weight':weight,
         'gender':gender,
-        'phone':phoneNumber,
+        'phoneNumber':phoneNumber,
         'email':email,
         'uid' : uid
       }).then(function(docRef){
@@ -137,6 +178,30 @@ export class BeverageService {
         console.error("Error adding user details document: ", error);
       })
     }
+  }
+
+  async dataRefresh(){
+    let self = this;
+    let user_uid = firebase.auth().currentUser.uid
+    await self.db.collection("userData").where("uid", "==", user_uid).onSnapshot(function(querySnap){
+      self.users = []
+      querySnap.forEach(function(doc){
+        let use = doc.data();
+        self.users.push({
+          firstName: use.firstName,
+          lastName: use.lastName,
+          weight : use.weight,
+          gender: use.gender,
+          phoneNumber: use.phoneNumber,
+          email: use.email,
+          uid: use.uid,
+          docId : doc.id 
+        })
+        console.log("User information loading for : ", use.firstName)
+      })
+      self.publishEvent({})
+      console.log("User information loaded")
+    }) 
   }
 
   getUserData():any{var userObservable = new Observable(observer => {
@@ -159,7 +224,8 @@ export class BeverageService {
           percentage: cart.percentage,
           img: cart.img,
           description : cart.description,
-          uid: cart.uid
+          uid: cart.uid,
+          docId: doc.id
         })
       })
       self.publishEvent({})

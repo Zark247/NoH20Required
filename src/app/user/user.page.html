@@ -14,8 +14,46 @@
 
 <ion-content padding>
 
-<ion-item>
-  <ion-label color="dark">{{curr_user_data.firstName}} {{curr_user_data.lastName}}</ion-label>
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+<ion-item >
+  <ion-label color="dark" position = "stacked">Name:</ion-label>
+  <!-- <ion-input [(ngModel)] = "curr_user_data.firstName" [(ngModel)] = "curr_user_data.lastName" readonly></ion-input> -->
+  <ion-text>{{curr_user_data.firstName}} {{curr_user_data.lastName}}</ion-text>
 </ion-item>
+
+<ion-item >
+  <ion-label color="dark" position = "stacked">Weight:</ion-label>
+  <!-- <ion-input [(ngModel)] = "curr_user_data.weight" readonly></ion-input> -->
+  <ion-text>{{curr_user_data.weight}} lbs</ion-text>
+</ion-item>
+
+<ion-item>
+  <ion-label color="dark" position = "stacked">Gender:</ion-label>
+  <!-- <ion-input [(ngModel)] = "curr_user_data.gender" readonly></ion-input> -->
+  <ion-text>{{curr_user_data.gender}}</ion-text>
+</ion-item>
+
+<ion-item>
+  <ion-label color="dark" position = "stacked">Phone Number:</ion-label>
+  <!-- <ion-input [(ngModel)] = "curr_user_data.phoneNumber" readonly></ion-input> -->
+  <ion-text>{{curr_user_data.phoneNumber}}</ion-text>
+</ion-item>
+
+<ion-item>
+  <ion-label color="dark" position = "stacked">Email:</ion-label>
+  <!-- <ion-input [(ngModel)] = "curr_user_data.email" readonly></ion-input> -->
+  <ion-text>{{curr_user_data.email}}</ion-text>
+</ion-item>
+
+
+
 
 </ion-content>

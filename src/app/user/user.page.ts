@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import * as firebase from 'firebase';
 import { Route } from '@angular/compiler/src/core';
 import { ChangeDetectorRef } from '@angular/core';
@@ -25,10 +25,9 @@ export class UserPage implements OnInit {
     gender:"",
     phoneNumber:"",
     email:""
-
   };
 
-  constructor(private router: Router, public bserv:BeverageService, private cref:ChangeDetectorRef) {
+  constructor(private router: Router, public bserv:BeverageService, public cref:ChangeDetectorRef) {
 
     this.bserv.getObservable().subscribe((data)=>{
       console.log("User data received", data);
@@ -36,24 +35,44 @@ export class UserPage implements OnInit {
 
     })
 
-    this.users = this.bserv.users;
+ 
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
+
+    this.users = this.bserv.users;
+
+
     // this.mySub = this.router.events.subscribe((event) => {
     //   if (event instanceof NavigationEnd) {
-    //     // Trick the Router into believing it's last link wasn't previously loaded
     //     this.router.navigated = false;
     //   }
     // });
    }
 
   ngOnInit() {
+    // this.bserv.dataRefresh();
     this.users = this.bserv.getUserData();
     if(firebase.auth().currentUser != null){
-      this.showDetails();
+      this.singleDetails();
+      this.bserv.dataRefresh();
+    }
+    this.cref.detectChanges();
+  }
+  ngAfterViewInit()	{
+    if(firebase.auth().currentUser != null){
+      this.singleDetails();
+      this.bserv.dataRefresh();
     }
   
+  }	
+
+
+  ngOnChanges() {
+    if(firebase.auth().currentUser != null){
+      this.singleDetails();
+      this.bserv.dataRefresh();
+    }
   }
 
   editDetails(){
@@ -61,13 +80,15 @@ export class UserPage implements OnInit {
 
   }
 
-  showDetails(){
+  singleDetails(){
+    let self = this;
+    this.bserv.dataRefresh()
+    this.users = this.bserv.users;
     let user_uid = firebase.auth().currentUser.uid;
-
     this.users.forEach(function(u_val) {
       if(u_val.uid == user_uid){
         console.log("Found User: ", u_val.firstName)
-        this.curr_user_data = {
+        self.curr_user_data = {
           firstName: u_val.firstName,
           lastName: u_val.lastName,
           weight: u_val.weight,
@@ -77,7 +98,25 @@ export class UserPage implements OnInit {
         }
       }
     });
-
   }
 
+  doRefresh(event){
+    
+    if(firebase.auth().currentUser != null){
+      this.singleDetails();
+      this.bserv.dataRefresh();
+    }
+    
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
+
+  // ngOnDestroy() {
+  //     console.log("Destroy called in order list, unsubscribed ");
+  //   }
+  // }  
 }

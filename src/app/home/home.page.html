@@ -53,7 +53,7 @@
 
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
-      pullingIcon="arrow-dropdown"
+      pullingIcon="arrow-down"
       pullingText="Pull to refresh"
       refreshingSpinner="circles"
       refreshingText="Refreshing...">
@@ -64,9 +64,7 @@
     <img src="/assets/drinks.jpg"/>
   </ion-card>
   
-  <!-- <ion-item *ngFor="let user of (current_username | async)"> -->
-      <ion-label>Welcome, {{current_username}}!</ion-label>
-  <!-- </ion-item> -->
+      <ion-label >Welcome, {{current_username}}!</ion-label>
 
   <ion-card>
     <ion-card-header> Alcohol Levels </ion-card-header>
@@ -78,6 +76,17 @@
       [options] = "chartOptions"></canvas>
     </ion-card-content>
   </ion-card>
+
+<ion-item>
+  <ion-label color="dark">Current BAC:  </ion-label>
+</ion-item>
+
+<ion-item>
+  <ion-label color="dark">You have consumed:</ion-label>
+</ion-item>
+<ion-item>
+  <ion-label color="dark">You have been drinking for: </ion-label>
+</ion-item>
 
 </ion-content>
 
