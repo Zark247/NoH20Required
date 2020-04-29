@@ -8,5 +8,19 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-list lines="full">
+    <ion-list>
+      <ion-item *ngFor="let drink of cart">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="img"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+          {{name}}
+        </ion-label>
+        <ion-label>
+          {{percentage}}%
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-list>
 </ion-content>

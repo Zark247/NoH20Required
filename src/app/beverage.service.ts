@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { Observable, Subject } from 'rxjs';
 import * as firebase from 'firebase';
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 
 @Injectable({
@@ -10,8 +11,8 @@ import * as firebase from 'firebase';
 export class BeverageService {
   db = firebase.firestore()
   private eventSubject = new Subject<any>()
-  drinks:Array<any> = []
-  
+  drinks:Array<any> = [];
+  cart:Array<any> = [];
   publishEvent(data:any) {
     this.eventSubject.next(data)
   }
@@ -80,6 +81,35 @@ export class BeverageService {
       })
       self.publishEvent({})
       console.log("Beverage list loaded")
+    })
+  }
+
+
+  // Beverage cart functions
+  
+  getCart():any{var cartObservable = new Observable(observer => {
+    setTimeout(()=> {
+      observer.next(this.cart);
+    }, 1000);
+    });
+    return cartObservable;
+  }
+  // getCart(){
+  //   return this.cart;
+  // }
+  addToCart(name, img, percentage, description){
+    var self = this;
+
+    var db = firebase.firestore();
+    db.collection("cart").add({
+      'name':name,
+      'img':img,
+      'percentage':percentage,
+      'description':description,
+    }).then(function(docRef){
+      console.log("Document written with ID: ", docRef.id);
+    }).catch(function(error){
+      console.error("Error adding document: ", error);
     })
   }
 }
