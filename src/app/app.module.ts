@@ -10,8 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 
+import { AngularFirestore } from '@angular/fire/firestore';
 //added for the signup page
-// import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -32,9 +33,10 @@ const firebaseConfig = {
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
 
+
     //added for the signup page
-    FormsModule
-    // AngularFireModule.initializeApp(firebaseConfig),
+    FormsModule,
+    AngularFireModule.initializeApp(firebaseConfig),
     // AngularFirestoreModule,
     // AngularFireAuthModule,
     // AngularFireStorageModule
@@ -42,6 +44,7 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+    AngularFirestore,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
