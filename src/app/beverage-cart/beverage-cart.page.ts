@@ -12,26 +12,21 @@ import * as firebase from "firebase";
 })
 export class BeverageCartPage implements OnInit {
 
-  cart = [];
-  //drink = null;
+  carts = []
   mySubscription:any;
+
   constructor( 
-      private router: Router, 
-      public beverageService: BeverageService,
-    ){
-      this.beverageService.getObservable().subscribe((data) => {
-        console.log('Data received', data);
-        this.cart = this.beverageService.getCart();
-      });
-      console.log(firebase.auth().currentUser)
-      if (firebase.auth().currentUser ==  null){
-        console.log("user not logged in");
-      }
+    private router: Router, 
+    public beverageService: BeverageService) {
+    this.beverageService.getObservable().subscribe((data) => {
+      console.log('Data received', data);
+      this.carts = this.beverageService.cart
+    })
+    console.log(firebase.auth().currentUser)
   }
                   
-
   ngOnInit() {
-  
+    this.beverageService.cartRefresh()
   }
 
 }

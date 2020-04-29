@@ -3,22 +3,22 @@
     <ion-buttons slot = "start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>beverage-cart</ion-title>
+    <ion-title>Cart</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list lines="full">
     <ion-list>
-      <ion-item *ngFor="let drink of cart">
+      <ion-item *ngFor="let cart of carts">
         <ion-thumbnail slot="start">
-          <ion-img [src]="img"></ion-img>
+          <ion-img [src]="cart.img"></ion-img>
         </ion-thumbnail>
         <ion-label>
-          {{name}}
+          {{cart.name}}
         </ion-label>
         <ion-label>
-          {{percentage}}%
+          {{cart.percentage}}%
         </ion-label>
       </ion-item>
     </ion-list>

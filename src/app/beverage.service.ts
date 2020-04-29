@@ -9,10 +9,12 @@ import { debugOutputAstAsTypeScript } from '@angular/compiler';
   providedIn: 'root'
 })
 export class BeverageService {
+
   db = firebase.firestore()
   private eventSubject = new Subject<any>()
   drinks:Array<any> = [];
   cart:Array<any> = [];
+
   publishEvent(data:any) {
     this.eventSubject.next(data)
   }
@@ -99,17 +101,39 @@ export class BeverageService {
   // }
   addToCart(name, img, percentage, description){
     var self = this;
+    if(firebase.auth().currentUser != null) {
+      let uid = firebase.auth().currentUser.uid
+      self.db.collection("cart").add({
+        'name':name,
+        'img':img,
+        'percentage':percentage,
+        'description':description,
+        'uid': uid
+      }).then(function(docRef){
+        console.log("Document written with ID: ", docRef.id);
+      }).catch(function(error){
+        console.error("Error adding document: ", error);
+      })
+    }
+  }
 
-    var db = firebase.firestore();
-    db.collection("cart").add({
-      'name':name,
-      'img':img,
-      'percentage':percentage,
-      'description':description,
-    }).then(function(docRef){
-      console.log("Document written with ID: ", docRef.id);
-    }).catch(function(error){
-      console.error("Error adding document: ", error);
+  async cartRefresh() {
+    let self = this
+    await self.db.collection("cart").where("uid", "==", firebase.auth().currentUser.uid)
+      .onSnapshot(function(querySnapshot) {
+      self.cart = []
+      querySnapshot.forEach(function(doc) {
+        let cart = doc.data()
+        self.cart.push({
+          name: cart.name,
+          percentage: cart.percentage,
+          img: cart.img,
+          description : cart.description,
+          uid: cart.uid
+        })
+      })
+      self.publishEvent({})
+      console.log("Beverage cart loaded for: " +firebase.auth().currentUser.uid)
     })
   }
 }
