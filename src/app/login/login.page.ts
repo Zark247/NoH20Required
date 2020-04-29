@@ -12,6 +12,7 @@ export class LoginPage implements OnInit {
 
   new_user_form:FormGroup
   db = firebase.firestore()
+  current_user : any = []
 
   constructor(private router:Router,
     public formBuilder:FormBuilder) { }
@@ -50,8 +51,10 @@ export class LoginPage implements OnInit {
       self.db.collection("users").where("uid", "==", user.uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           console.log(doc.id, "=>", doc.data())
-          let type = doc.data().usertype
-          console.log("Usertype: ", type)
+          let type = doc.data().usertype;
+          let firstname = doc.data().firstName;
+          console.log("Usertype: ", type);
+          console.log("firstname", firstname);
           //set user type here
         })
       }).catch(function(error) {
@@ -63,7 +66,7 @@ export class LoginPage implements OnInit {
       self.router.navigate(['/home'])
     })
   }
-
+  
   loginGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('profile')

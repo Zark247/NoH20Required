@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { Router,ActivatedRoute } from '@angular/router';
 
+
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -70,10 +72,11 @@ export class SignupPage implements OnInit {
 				'firstName':self.firstName,
 				'lastName':self.lastName,
 				'birthDate':self.birthDate,
-				'age':self.age,
+				'age':self.age
+
 		    })
 		    .then(function(docRef) {
-		    	console.log("usetype written with ID: ", docRef.id);
+				console.log("usetype written with ID: ", docRef.id);
 		      })
 		      .catch(function(error) {
 		          console.error("Error adding document: ", error);

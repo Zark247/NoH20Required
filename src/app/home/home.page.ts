@@ -1,18 +1,83 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { HttpClientModule } from '@angular/common/http';
+
 
 // import { Events } from '@ionic/angular';
 import * as firebase from 'firebase';
+import {ChartDataSets} from 'chart.js';
+
+import {ChartType} from 'chart.js';
+
+import {MultiDataSet, Label} from 'ng2-charts';
+import {Color} from 'ng2-charts';
+
+
+import { BeverageService } from '../beverage.service';
+import * as Chart from 'chart.js';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  // @ViewChild('doughnutCanvas', {static:false}) doughnutCanvas: ElementRef;
 
-  constructor(private router: Router, private sidemenu: MenuController) {}
+  public chartLabels: Label[] = ['BAC', 'Estimated Cost', 'Hours since last drink'];
+  public chartData: MultiDataSet= [
+    [0.02, 0, 0],
+    [0, 30, 0],
+    [0, 0, 0.25]
+    
+  ];
+  public chartOptions = {
+    responsive:true,
+    title: {
+      display: true,
+      text: "Level of Drinking"
+    },
+    pan:{
+      enable:true,
+      mode: 'xy'
+
+    },
+    zoom:{
+      enable:true,
+      mode: 'xy'
+    }
+  };
+  public chartColors: Color[] = [
+    {
+      borderColor: '#000000',
+      backgroundColor: '#ff00ff'
+    
+    }
+  ];
+  public chartType: ChartType = 'pie'
+  showLegend = false;
+
+
+  stock = '';
+  current_username: any = "Please Log-in";
+  current_user: any;
+  db = firebase.firestore();
+  
+
+  constructor(private router: Router, private sidemenu: MenuController, public bserv: BeverageService) {
+    this.getCurrUser();
+    // this.updateChart();
+
+  }
+  ngOnInit(){
+    this.getCurrUser();
+    // this.updateChart();
+  }
+  ngOnChanges() {
+    this.getCurrUser();
+    // this.updateChart();
+  }
 
   openFirst() {
     this.sidemenu.enable(true, 'first');
@@ -74,5 +139,34 @@ export class HomePage {
     } else {
       alert("You are already logged in.")
     }
+  }
+
+  getCurrUser() : any{
+    console.log("IN CURR USER FUNCTION")
+    var usernameid;
+    if(firebase.auth().currentUser != null){
+      let self = this;
+      usernameid = firebase.auth().currentUser.uid
+      self.db.collection("users").where("uid", "==", usernameid).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          console.log(doc.id, "=>", doc.data())
+          let fname = doc.data().firstName;
+          console.log("firstname: ", fname);
+          this.current_user = doc.data();
+          return fname;
+        })
+      }).catch(function(error) {
+        console.log("Error getting documents: ", error)
+        alert("Login failed, try again.")
+      })
+    }
+  }
+  doRefresh(event){
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
   }
 }

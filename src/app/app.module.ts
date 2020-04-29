@@ -6,9 +6,14 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+// Home Page Charts
+import 'chartjs-plugin-zoom';
+// import {Chart} from 'chart.js';
+// import { Ng2GoogleChartsModule, GoogleChartsSettings } from 'ng2-google-charts';
 
 //added for the signup page
 // import { AngularFireModule } from '@angular/fire';
@@ -42,6 +47,7 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+    // {provide: googleChartsSettings, useValue: MyGoogleChartsSettings},
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
