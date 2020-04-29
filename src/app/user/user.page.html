@@ -3,10 +3,19 @@
     <ion-buttons slot = "start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>user</ion-title>
+    <ion-buttons slot = "end">
+      <ion-button (click) = "editDetails()">
+        <ion-icon slot = "icon-only" name = "create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>User Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+
+<ion-item>
+  <ion-label color="dark">{{curr_user_data.firstName}} {{curr_user_data.lastName}}</ion-label>
+</ion-item>
 
 </ion-content>

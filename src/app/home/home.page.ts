@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { MenuController } from '@ionic/angular';
-import { HttpClientModule } from '@angular/common/http';
-
+// import { HttpClientModule } from '@angular/common/http';
 
 // import { Events } from '@ionic/angular';
 import * as firebase from 'firebase';
@@ -13,6 +12,8 @@ import {ChartType} from 'chart.js';
 import {MultiDataSet, Label} from 'ng2-charts';
 import {Color} from 'ng2-charts';
 
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 import { BeverageService } from '../beverage.service';
 import * as Chart from 'chart.js';
@@ -61,22 +62,22 @@ export class HomePage implements OnInit {
 
   stock = '';
   current_username: any = "Please Log-in";
-  current_user: any;
+  current_user: any = [];
   db = firebase.firestore();
   
 
-  constructor(private router: Router, private sidemenu: MenuController, public bserv: BeverageService) {
-    this.getCurrUser();
-    // this.updateChart();
+  constructor(private router: Router, private sidemenu: MenuController, 
+    public bserv: BeverageService, private cref : ChangeDetectorRef ) {
 
   }
   ngOnInit(){
     this.getCurrUser();
     // this.updateChart();
+    this.cref.detectChanges();
   }
-  ngOnChanges() {
+
+  ngAfterViewInit(){
     this.getCurrUser();
-    // this.updateChart();
   }
 
   openFirst() {
@@ -149,25 +150,34 @@ export class HomePage implements OnInit {
     }
   }
 
-  getCurrUser() : any{
+  async getCurrUser() {
     console.log("IN CURR USER FUNCTION")
     var usernameid;
     if(firebase.auth().currentUser != null){
       let self = this;
       usernameid = firebase.auth().currentUser.uid
-      self.db.collection("users").where("uid", "==", usernameid).get().then(function(querySnapshot) {
+      await self.db.collection("users").where("uid", "==", usernameid).get().then(function(querySnapshot) {
+        this.current_user = [];
         querySnapshot.forEach(function(doc) {
           console.log(doc.id, "=>", doc.data())
-          let fname = doc.data().firstName;
-          console.log("firstname: ", fname);
-          this.current_user = doc.data();
-          return fname;
+          let userstuff = doc.data();
+          console.log("firstname: ", userstuff.firstName);
+          self.current_user.push = ({
+            firstName: userstuff.firstName,
+            lastName: userstuff.lastName,
+            age: userstuff.age
+          });
         })
+        
       }).catch(function(error) {
         console.log("Error getting documents: ", error)
         alert("Login failed, try again.")
       })
+      this.current_user = self.current_user;
+      
     }
+    
+    console.log("UserName: ", this.current_user.firstName, " ", this.current_user.lastName)
   }
   doRefresh(event){
     console.log('Begin async operation');

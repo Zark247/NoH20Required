@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>New User Information</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="new_details_form" (submit)="createItem(new_details_form.value)">
+    <ion-item>
+      <ion-label color="primary" position = "floating">First Name:</ion-label>
+      <ion-input type = "text" formControlName="firstName" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position = "floating">Last Name:</ion-label>
+      <ion-input type = "text" formControlName="lastName" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position = "floating">Weight:</ion-label>
+      <ion-input type = "text" formControlName="weight" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Gender</ion-label>
+      <ion-select multiple = "false" cancelText = "Cancel" okText="Select" formControlName="gender">
+        <ion-select-option value = "Male">Male</ion-select-option>
+        <ion-select-option value = "Female">Female</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position = "floating">Phone Number:</ion-label>
+      <ion-input type = "text" formControlName="phoneNumber" required></ion-input>
+    </ion-item>
+    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!new_details_form.valid">Add Information</ion-button>
+  </form>
+</ion-content>

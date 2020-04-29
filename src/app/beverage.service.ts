@@ -14,6 +14,7 @@ export class BeverageService {
   private eventSubject = new Subject<any>()
   drinks:Array<any> = [];
   cart:Array<any> = [];
+  users:Array<any> = [];
 
   publishEvent(data:any) {
     this.eventSubject.next(data)
@@ -115,6 +116,35 @@ export class BeverageService {
         console.error("Error adding document: ", error);
       })
     }
+  }
+
+  addUserData(firstName, lastName, weight, gender, phoneNumber){
+    var self = this;
+    if(firebase.auth().currentUser != null){
+      let uid = firebase.auth().currentUser.uid;
+      let email = firebase.auth().currentUser.email;
+      self.db.collection("userData").add({
+        'firstName':firstName,
+        'lastName':lastName,
+        'weight':weight,
+        'gender':gender,
+        'phone':phoneNumber,
+        'email':email,
+        'uid' : uid
+      }).then(function(docRef){
+        console.log("User Details Document Written with ID: ", docRef.id);
+      }).catch(function(error){
+        console.error("Error adding user details document: ", error);
+      })
+    }
+  }
+
+  getUserData():any{var userObservable = new Observable(observer => {
+    setTimeout(()=> {
+      observer.next(this.users);
+    }, 1000);
+    });
+    return userObservable;
   }
 
   async cartRefresh() {
