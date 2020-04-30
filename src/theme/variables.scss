@@ -92,6 +92,7 @@
     }
     ion-content{
       --background: #272727;
+      --color: #ffffff;
     }
     ion-list{
       --ion-item-background: #272727;
@@ -101,6 +102,9 @@
         --color: #ffffff;
       }
       
+    ion-button{
+      color: #ffffff;
+    }
     }
     ion-label{
       color: #ffffff;      
