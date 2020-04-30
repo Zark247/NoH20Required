@@ -56,19 +56,33 @@ export class BeverageService {
     }
     if(this.current_user != null && this.cart != null){
       console.log("Setting user info and doing mathematics")
-      var alc_totalp = 0;
+      var alc_totalp : number = 0;
+      var total_ozs : number = 0;
       this.cart.forEach(function(addperc){
-        alc_totalp = addperc.percentage + alc_totalp;
+
+        console.log("Adding Percentage", addperc.percentage);
+        alc_totalp = parseFloat(addperc.percentage) + alc_totalp;
+        
+        console.log("Adding Ozs: ", addperc.oz);
+        total_ozs = total_ozs + parseFloat(addperc.oz);
+        
         drinksConsumed = drinksConsumed + 1;
         hoursDrinking = hoursDrinking + 0.45;
       })
-      bac = this.getBAC(12,alc_totalp, this.current_user.weight, this.current_user.gender, 0.20)
+      console.log("Total Alcohol Percentage: ", alc_totalp );
+      console.log("Total Ounces of Liquid Consumed: ", total_ozs);
+      console.log("Drinking For: ", hoursDrinking)
+      bac = this.getBAC(<number> total_ozs, <number> alc_totalp, <number> this.current_user.weight, <string> this.current_user.gender, hoursDrinking)
 
       let drinking_info = {
         name: this.current_user.firstName,
+        weight: this.current_user.weight,
+        gender:this.current_user.gender,
         BAC:bac,
         drinksDrunk:drinksConsumed,
-        timeDrinking:hoursDrinking
+        timeDrinking:hoursDrinking,
+        alc:alc_totalp,
+        liquidOzs:total_ozs,
       }
 
       return drinking_info;
@@ -97,18 +111,21 @@ export class BeverageService {
     let female = "female";
     // Calculate bigA (weight of the liquid alc)
     let bev_dec_alc: number = (bev_alc * 0.01); // Convert percent to decimal (should float)
-    let bigA = (bev_ounces * bev_dec_alc) * 5.14;
+    let bigA = (bev_ounces * bev_dec_alc) * 0.789;
     // Individual's info
     let denominator = 0;
 
     if(gender.toUpperCase() == female.toUpperCase()) { // Female
-      denominator = (ind_weight * 0.66);
+      denominator = (ind_weight * 0.55);
     } else { // Male
-      denominator = (ind_weight * 0.73);
+      denominator = (ind_weight * 0.68);
     }
     // Divide
     let BA = bigA / denominator;
     BAC = BA - ( 0.015 * hours);
+    if(BAC < 0){
+      BAC = 0;
+    }
     return BAC;
   }
 
@@ -270,6 +287,19 @@ export class BeverageService {
       }).catch(function(error){
         console.log("Error removing document: ", error);
       });
+  }
+
+  updateUser(newValues){
+    console.log(newValues.uid);
+    this.db.collection("userData").doc(newValues.docId).update({
+      'uid': newValues.uid,
+      'firstName': newValues.firstName,
+      'lastName': newValues.lastName,
+      'weight': newValues.weight,
+      'gender': newValues.gender,
+      'phoneNumber': newValues.phoneNumber,
+      'email':newValues.email,
+    });
   }
 }
 

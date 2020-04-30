@@ -54,7 +54,13 @@
   <ion-text>{{curr_user_data.email}}</ion-text>
 </ion-item>
 
+<ion-item>
+  <ion-label color="dark" position = "stacked">ID:</ion-label>
+  <!-- <ion-input [(ngModel)] = "curr_user_data.email" readonly></ion-input> -->
+  <ion-text>{{curr_user_data.docId}}</ion-text>
+</ion-item>
 
+<ion-button expand="block" (click)="goToSettings(curr_user_data)">Go To Settings</ion-button>
 
 
 </ion-content>

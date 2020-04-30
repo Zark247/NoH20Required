@@ -24,7 +24,8 @@ export class UserPage implements OnInit {
     weight:"",
     gender:"",
     phoneNumber:"",
-    email:""
+    email:"",
+    docId:"",
   };
 
   constructor(private router: Router, public bserv:BeverageService, public cref:ChangeDetectorRef) {
@@ -62,6 +63,7 @@ export class UserPage implements OnInit {
       this.bserv.dataRefresh();
     }
     this.cref.detectChanges();
+    
   }
   ngAfterViewInit()	{
     if(firebase.auth().currentUser != null){
@@ -98,7 +100,8 @@ export class UserPage implements OnInit {
           weight: u_val.weight,
           gender: u_val.gender,
           phoneNumber:u_val.phoneNumber,
-          email:u_val.email
+          email:u_val.email,
+          docId:u_val.docId,
         }
       }
     });
@@ -119,6 +122,10 @@ export class UserPage implements OnInit {
     }, 2000);
   }
 
+  goToSettings(curr_user_data){
+    console.log(curr_user_data);
+    this.router.navigate(['/settings', curr_user_data]);
+  }
   // ngOnDestroy() {
   //     console.log("Destroy called in order list, unsubscribed ");
   //   }
