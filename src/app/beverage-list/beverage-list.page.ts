@@ -24,6 +24,10 @@ export class BeverageListPage implements OnInit {
 
     })
   }
+  
+  home() {
+    this.router.navigate(['/home'])
+  }
 
   goToDrink(drink) {
     console.log("Clicked on:", drink.name)

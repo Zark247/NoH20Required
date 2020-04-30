@@ -25,16 +25,8 @@ const routes: Routes = [
     loadChildren: () => import('./beverage-info/beverage-info.module').then( m => m.BeverageInfoPageModule)
   },
   {
-    path: 'search',
-    loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
-  },
-  {
     path: 'user',
     loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
-  },
-  {
-    path: 'advanced-user',
-    loadChildren: () => import('./advanced-user/advanced-user.module').then( m => m.AdvancedUserPageModule)
   },
   {
     path: 'settings',
@@ -47,12 +39,7 @@ const routes: Routes = [
   {
     path: 'adduserdetails',
     loadChildren: () => import('./adduserdetails/adduserdetails.module').then( m => m.AdduserdetailsPageModule)
-  },
-  {
-    path: 'updateuserdetails',
-    loadChildren: () => import('./updateuserdetails/updateuserdetails.module').then( m => m.UpdateuserdetailsPageModule)
-  },
-
+  }
 ];
 
 @NgModule({

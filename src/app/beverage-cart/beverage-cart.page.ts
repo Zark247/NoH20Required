@@ -37,8 +37,13 @@ export class BeverageCartPage implements OnInit {
     );
   }
 
+  home() {
+    this.router.navigate(['/home'])
+  }
   clearCart(){
     this.beverageService.clearCart();
+    console.log("Cart cleared.")
+    alert("Cart cleared.")
   }
 
   deleteDrink(docID, cart: IonItemSliding) {

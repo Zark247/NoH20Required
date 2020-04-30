@@ -19,7 +19,7 @@ export class BeverageInfoPage implements OnInit {
       img: new FormControl(),
       percentage: new FormControl(),
       description: new FormControl(),
-      oz: new FormControl(),
+      oz: new FormControl()
     })
     
    }
@@ -34,6 +34,10 @@ export class BeverageInfoPage implements OnInit {
         this.drink_detail_form.patchValue({description:this.current_drink.description})
         this.drink_detail_form.patchValue({oz:this.current_drink.oz})
       })
+  }
+
+  home() {
+    this.router.navigate(['/home'])
   }
 
   placeInCart(){

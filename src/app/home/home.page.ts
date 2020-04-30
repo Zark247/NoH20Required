@@ -140,10 +140,6 @@ export class HomePage implements OnInit {
     this.router.navigate(['/beverage-list']);
   }
 
-  toSearch() {
-    this.router.navigate(['/search']);
-  }
-
   toBevCart() {
     let self = this
     if(firebase.auth().currentUser == null) {
@@ -164,11 +160,17 @@ export class HomePage implements OnInit {
     } else {
       self.router.navigate(['/user']);
     }
-
   }
 
   toLocation(){
-    this.router.navigate(['location']);
+    let self = this
+    if(firebase.auth().currentUser == null) {
+      console.log("Not logged in, directing to log in.")
+      alert("Not logged in, directing to log in.")
+      self.router.navigate(["/login"])
+    } else {
+      self.router.navigate(['/location']);
+    }
   }
 
   toSettings(){
@@ -228,13 +230,7 @@ export class HomePage implements OnInit {
       this.current_bac = this.current_user_data.BAC;
       this.current_drinks = this.current_user_data.drinksDrunk;
       this.current_timespent = this.current_user_data.timeDrinking;
-
-
-
     }
-    
-
-
   }
 
   doRefresh(event){

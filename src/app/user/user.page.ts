@@ -50,6 +50,10 @@ export class UserPage implements OnInit {
     // });
    }
 
+   home() {
+     this.router.navigate(['/home'])
+   }
+
   ngOnInit() {
     // this.bserv.dataRefresh();
     this.users = this.bserv.getUserData();

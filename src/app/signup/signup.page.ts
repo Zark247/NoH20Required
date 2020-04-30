@@ -23,6 +23,8 @@ export class SignupPage implements OnInit {
   birthDate = "";
   usertype = "visitor";
   age;
+
+  db = firebase.firestore()
   constructor(private router:Router) { 
 	  this.today = new Date(); 
   }
@@ -72,7 +74,8 @@ export class SignupPage implements OnInit {
 				'firstName':self.firstName,
 				'lastName':self.lastName,
 				'birthDate':self.birthDate,
-				'age':self.age
+				'age':self.age,
+				//'new': "true"
 
 		    })
 		    .then(function(docRef) {
@@ -83,7 +86,42 @@ export class SignupPage implements OnInit {
 		      });
 		console.log("finished creating account")
 		console.log(user.uid)
+		/*
+		console.log("Please log in")
 		self.router.navigate(["/login"]);
+		*/
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+			//catches errors from login method
+			let errorCode = error.code
+			let errorMessage = error.message
+			console.log("Error code: ", errorCode)
+			console.log("Error message: ", errorMessage)
+			//pushes alerts to user based on error
+			if(errorCode === "auth/wrong-password") {
+			  alert("Wrong password.")
+			} else if(errorCode === "auth/user-not-found") {
+			  alert("User does not exist or wrong email.")
+			}
+			console.log(error)
+		  }
+		  ).then(function(result) {
+			let user = firebase.auth().currentUser
+			self.db.collection("users").where("uid", "==", user.uid).get().then(function(querySnapshot) {
+			  querySnapshot.forEach(function(doc) {
+				console.log(doc.id, "=>", doc.data())
+				let firstName = doc.data().firstName
+				console.log("First Name:", firstName)
+				
+			  })
+			}).catch(function(error) {
+			  console.log("Error getting documents: ", error)
+			  alert("Login failed, try again.")
+			})
+			console.log("Login successful")
+			alert("Login successful, please fill out next page.")
+			self.router.navigate(['/adduserdetails'])
+		  })
+
 		});
 	}
 }

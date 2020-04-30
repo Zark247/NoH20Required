@@ -32,13 +32,14 @@ export class LoginPage implements OnInit {
     let self = this
     let email = user.email
     let password = user.password
+    let newUser:string = "false"
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
       //catches errors from login method
       let errorCode = error.code
       let errorMessage = error.message
       console.log("Error code: ", errorCode)
       console.log("Error message: ", errorMessage)
-      //pushes alerts to user base on error
+      //pushes alerts to user based on error
       if(errorCode === "auth/wrong-password") {
         alert("Wrong password.")
       } else if(errorCode === "auth/user-not-found") {
@@ -51,16 +52,24 @@ export class LoginPage implements OnInit {
       self.db.collection("users").where("uid", "==", user.uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           console.log(doc.id, "=>", doc.data())
-          let type = doc.data().usertype;
-          let firstname = doc.data().firstName;
-          console.log("Usertype: ", type);
-          console.log("firstname", firstname);
-          //set user type here
+          let firstName = doc.data().firstName
+          //this.newUser = doc.data().new
+          console.log("First Name:", firstName)
+          
         })
       }).catch(function(error) {
         console.log("Error getting documents: ", error)
         alert("Login failed, try again.")
       })
+      //need to remove new tag from user account after first log in
+      /*
+      if(newUser == "true") {
+        console.log("New User, must fill in details")
+        alert("Please fill out the user details")
+        this.router.navigate(['adduserdetails'])
+      
+      }
+      */
       console.log("Login successful")
       alert("Login successful")
       self.router.navigate(['/home'])
