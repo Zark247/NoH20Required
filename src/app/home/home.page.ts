@@ -20,6 +20,7 @@ import { BeverageService } from '../beverage.service';
 import * as Chart from 'chart.js';
 import { stringify } from 'querystring';
 
+import { ThemeService } from '../theme.service';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -126,7 +127,7 @@ export class HomePage implements OnInit {
   
 
   constructor(private router: Router, private sidemenu: MenuController, 
-    public bserv: BeverageService, private cref : ChangeDetectorRef ) {
+    public bserv: BeverageService, private cref : ChangeDetectorRef, private themeService: ThemeService ) {
       this.bserv.getObservable().subscribe((data)=>{
         console.log("User data received", data);
         this.current_user = this.bserv.getUserData();
@@ -202,6 +203,7 @@ export class HomePage implements OnInit {
     this.sidemenu.enable(true, 'first');
     this.sidemenu.open('first');
   }
+
 
   toBevList() {
     this.router.navigate(['/beverage-list']);
@@ -354,4 +356,21 @@ export class HomePage implements OnInit {
       event.target.complete();
     }, 2000);
   }
+   // THIS WORKS FOR THE FIRST THEME SERVICE
+  // switchTheme(){
+  //   this.themeService.cycleTheme();
+  // // }
+
+  // // TRYING THIS FOR NEW STUFF
+
+  // enableDark(){
+  //   this.themeService.enableDark();
+  // }
+ 
+  // enableLight(){
+  //   this.themeService.enableLight();
+  // }
+
 }
+
+

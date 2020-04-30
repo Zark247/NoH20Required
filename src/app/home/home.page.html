@@ -21,9 +21,11 @@
       <ion-item>
         <ion-button (click)="toLocation()">Location</ion-button> 
       </ion-item>
+      
       <ion-item>
         <ion-button (click)="toSettings()">Settings</ion-button> 
       </ion-item>
+   
       <ion-item>
         <ion-button (click)="logOut()">Log Out</ion-button> 
       </ion-item>
@@ -45,6 +47,13 @@
       <ion-button (click)="login()">
         <ion-icon slot="icon-only" name="log-in"></ion-icon>
       </ion-button>
+      <!-- THIS WORKS FOR FIRST THEME SERVICE PART BY JUST USING 1 BUTTON-->
+      <!-- <ion-button (click)="enableDark()">
+        <ion-icon slot="icon-only" name="brush"></ion-icon>
+      </ion-button>
+      <ion-button (click)="enableLight()">
+        <ion-icon slot="icon-only" name="brush"></ion-icon>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -119,3 +128,8 @@
 
 </ion-content>
 
+<!-- TO TEST DARK/LIGHT MODE -->
+<!-- <ion-footer no-shadow>
+  <ion-button  expand="block" (click)="enableDark()">Enable Dark</ion-button>
+  <ion-button  expand="block" (click)="enableLight()">Enable Light</ion-button>
+</ion-footer> -->
