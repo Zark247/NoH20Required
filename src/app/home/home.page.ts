@@ -5,9 +5,10 @@ import { MenuController } from '@ionic/angular';
 
 // import { Events } from '@ionic/angular';
 import * as firebase from 'firebase';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import {ChartDataSets} from 'chart.js';
 
-import {ChartType} from 'chart.js';
+import {ChartType, ChartOptions} from 'chart.js';
 
 import {MultiDataSet, Label} from 'ng2-charts';
 import {Color} from 'ng2-charts';
@@ -17,6 +18,7 @@ import {Subject} from 'rxjs';
 
 import { BeverageService } from '../beverage.service';
 import * as Chart from 'chart.js';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-home',
@@ -24,19 +26,18 @@ import * as Chart from 'chart.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  // @ViewChild('doughnutCanvas', {static:false}) doughnutCanvas: ElementRef;
-
-  public chartLabels: Label[] = ['BAC', 'Estimated Cost', 'Hours since last drink'];
-  public chartData: MultiDataSet= [
-    [0.02, 0, 0],
-    [0, 30, 0],
-    [0, 0, 0.25]
-    
-  ];
+  // CHART ONE
+  public chartLabels: Label[] = [['Fl Oz'], ['Drinks'], ['Hours', '(Est)']];
+  public chartData: number[] = [ 20, 3, 1.35 ];
+  public chartLegend = true;
+  public chartPlugins = [pluginDataLabels];
   public chartOptions = {
     responsive:true,
+    legend: {
+      position: 'left',
+    },
     title: {
-      display: true,
+      display: false,
       text: "Level of Drinking"
     },
     pan:{
@@ -47,31 +48,79 @@ export class HomePage implements OnInit {
     zoom:{
       enable:true,
       mode: 'xy'
-    }
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+      },
+    },
+  }
   };
-  public chartColors: Color[] = [
+  public chartColors = [
     {
-      borderColor: '#000000',
-      backgroundColor: '#ff00ff'
-    
+      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
     }
   ];
   public chartType: ChartType = 'pie'
-  showLegend = false;
 
+  //CHART TWO
+  public BACchartLabels: Label[] = ['Current', '+30mins', '+1hrs',  '+2.5hrs', '+5hrs', '+10hrs'];
+  public BACchartData: number[] = [ .12, .09, .09, .06, .04, .01 ];
+  public BACchartLegend = false;
+  public BACchartPlugins = [pluginDataLabels];
+  public BACchartOptions = {
+    responsive:true,
+    legend: {
+      position: 'left',
+    },
+    title: {
+      display: false,
+      text: "BAC Levels"
+    },
+    pan:{
+      enable:true,
+      mode: 'xy'
 
-    
-  current_username: any = "Please Log-in";
-  current_bac: any = "Please Log-in";
-  current_drinks: any = "Please Log-in";
-  current_timespent:any = "Please Log-in";
+    },
+    zoom:{
+      enable:true,
+      mode: 'xy'
+    },
+      scales: { xAxes: [{}], yAxes: [{}] },
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+        },
+      }
+  };
+  public BACchartColors = [
+    {
+      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,0,255,0.3)', 'rgba(255,0,0,0.3)', 'rgba(0,0,255,0.3)','rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+    }
+  ];
+  public BACchartType: ChartType = 'bar'
+
+  // END OF CHARTS
+  current_username: any = "Anon";
+  current_bac: any = 0;
+  current_drinks: any = 0;
+  current_liquidoz:any = 0;
+  current_timespent:any = 0;
+  min_bac :any = 0;one_bac :any = 0; two_bac :any = 0; five_bac :any = 0; ten_bac :any = 0;  
 
   current_user = [];
   current_user_data = {
     name:null,
+    weight: null,
+    gender:null,
     BAC:null,
     drinksDrunk:null,
-    timeDrinking:null
+    timeDrinking:null,
+    alc:null,
+    liquidOzs:null
   };
   db = firebase.firestore();
   
@@ -97,9 +146,14 @@ export class HomePage implements OnInit {
       console.log(info.BAC);
       this.current_user_data = {
         name:info.name,
+        weight:info.weight,
+        gender:info.gender,
         BAC:info.BAC,
         drinksDrunk:info.drinksDrunk,
-        timeDrinking:info.timeDrinking
+        timeDrinking:info.timeDrinking,
+        alc:info.alc,
+        liquidOzs:info.liquidOzs
+
       };
       this.current_username = this.current_user_data.name;
       this.setData(); 
@@ -114,9 +168,13 @@ export class HomePage implements OnInit {
       let info = this.bserv.getDrinkingInfo();
       this.current_user_data = {
         name:info.name,
+        weight:info.weight,
+        gender:info.gender,
         BAC:info.BAC,
         drinksDrunk:info.drinksDrunk,
-        timeDrinking:info.timeDrinking
+        timeDrinking:info.timeDrinking,
+        alc:info.alc,
+        liquidOzs:info.liquidOzs
       };
       this.current_username = this.current_user_data.name;
       this.setData(); 
@@ -130,6 +188,15 @@ export class HomePage implements OnInit {
       this.bserv.dataRefresh();
     }
   }
+
+  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
+  }
+
+  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
+  }
+
 
   openFirst() {
     this.sidemenu.enable(true, 'first');
@@ -166,6 +233,8 @@ export class HomePage implements OnInit {
     }
 
   }
+
+
 
   toLocation(){
     this.router.navigate(['location']);
@@ -225,9 +294,30 @@ export class HomePage implements OnInit {
     else {
       console.log("Setting Chart Data")
 
-      this.current_bac = this.current_user_data.BAC;
-      this.current_drinks = this.current_user_data.drinksDrunk;
-      this.current_timespent = this.current_user_data.timeDrinking;
+      this.current_bac =  parseFloat(this.current_user_data.BAC);
+      this.current_drinks = parseFloat(this.current_user_data.drinksDrunk);
+      this.current_timespent = parseFloat(this.current_user_data.timeDrinking);
+      this.current_liquidoz = parseFloat(this.current_user_data.liquidOzs)
+
+      this.chartData = [ this.current_liquidoz, this.current_drinks, this.current_timespent ];
+
+      // Bac Calc for over time
+
+      let liqFloat = parseFloat(this.current_user_data.liquidOzs);
+      let alcFloat = parseFloat(this.current_user_data.alc);
+      let weightFloat = parseFloat(this.current_user_data.weight);
+      let genderS = <string>(this.current_user_data.gender);
+      let timeFloat = parseFloat(this.current_user_data.timeDrinking); 
+
+      this.min_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 0.30);
+      this.one_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 1.00);
+      this.two_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 2.50);
+      this.five_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 5.00);
+      this.ten_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 10.00);
+
+      this.BACchartData = [this.current_bac, parseFloat(this.min_bac), parseFloat(this.one_bac),
+           parseFloat(this.two_bac), parseFloat(this.five_bac), parseFloat(this.ten_bac)];
+
 
 
 

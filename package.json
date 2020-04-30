@@ -30,6 +30,7 @@
     "@ionic/angular": "^5.0.0",
     "angular-google-charts": "^1.1.4",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "chartjs-plugin-zoom": "^0.7.5",
     "cordova-plugin-firebase": "^2.0.5",
     "core-js": "^2.5.4",

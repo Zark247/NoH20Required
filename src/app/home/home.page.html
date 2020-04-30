@@ -63,30 +63,59 @@
   <ion-card class="welcome-card">
     <img src="/assets/drinks.jpg"/>
   </ion-card>
-  
-      <ion-label >Welcome, {{current_username}}!</ion-label>
+    
+  <ion-item>
+    <ion-label >Welcome, {{current_username}}!</ion-label>  
+  </ion-item>
+
+<ion-item>
+  <ion-label color="dark">Current BAC:  </ion-label>
+  <ion-text>{{current_bac}} %</ion-text>
+</ion-item>
 
   <ion-card>
-    <ion-card-header> Alcohol Levels </ion-card-header>
+    <ion-card-header> Drinking Levels </ion-card-header>
     <ion-card-content>
       <canvas baseChart
       [data] = "chartData"
       [labels] = "chartLabels"
       [chartType] = "chartType"
-      [options] = "chartOptions"></canvas>
+      [options] = "chartOptions"
+      [plugins] = "chartPlugins"
+      [colors] = "chartColors"
+      [legend] = "chartLegend"></canvas>
     </ion-card-content>
   </ion-card>
 
-<ion-item>
-  <ion-label color="dark">Current BAC:  </ion-label>
-</ion-item>
 
 <ion-item>
   <ion-label color="dark">You have consumed:</ion-label>
+  <ion-text>{{current_drinks}} Drinks</ion-text>
 </ion-item>
+
+<ion-item>
+  <ion-label color="dark">Volume consumed:</ion-label>
+  <ion-text>{{current_liquidoz}} Oz</ion-text>
+</ion-item>
+
 <ion-item>
   <ion-label color="dark">You have been drinking for: </ion-label>
+<ion-text>{{current_timespent}} Hours</ion-text>
 </ion-item>
+
+<ion-card>
+  <ion-card-header> BAC Over Time</ion-card-header>
+  <ion-card-content>
+    <canvas baseChart
+    [data] = "BACchartData"
+    [labels] = "BACchartLabels"
+    [chartType] = "BACchartType"
+    [options] = "BACchartOptions"
+    [plugins] = "BACchartPlugins"
+    [colors] = "BACchartColors"
+    [legend] = "BACchartLegend"></canvas>
+  </ion-card-content>
+</ion-card>
 
 </ion-content>
 
