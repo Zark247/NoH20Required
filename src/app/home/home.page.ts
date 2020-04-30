@@ -245,7 +245,14 @@ export class HomePage implements OnInit {
   }
 
   toSettings(){
-    this.router.navigate(['settings']);
+    let self = this
+    if(firebase.auth().currentUser == null) {
+      console.log("Not logged in, directing to log in.")
+      alert("Not logged in, directing to log in.")
+      self.router.navigate(["/login"])
+    } else {
+      self.router.navigate(['/settings']);
+    }
   }
 
   logOut() {
