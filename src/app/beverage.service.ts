@@ -3,12 +3,17 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from 'rxjs';
 import * as firebase from 'firebase';
 
+firebase.initializeApp(environment.firebaseConfig);
+
 import { debugOutputAstAsTypeScript } from '@angular/compiler';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class BeverageService {
 
   db = firebase.firestore()
