@@ -288,6 +288,19 @@ export class BeverageService {
         console.log("Error removing document: ", error);
       });
   }
+
+  updateUser(newValues){
+    console.log(newValues.uid);
+    this.db.collection("userData").doc(newValues.docId).update({
+      'uid': newValues.uid,
+      'firstName': newValues.firstName,
+      'lastName': newValues.lastName,
+      'weight': newValues.weight,
+      'gender': newValues.gender,
+      'phoneNumber': newValues.phoneNumber,
+      'email':newValues.email,
+    });
+  }
 }
 
 export const snapshotToArray = snapshot => {
