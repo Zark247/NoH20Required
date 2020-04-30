@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, MyLocation, GoogleMapsAnimation, GoogleMapsMapTypeId } from '@ionic-native/google-maps';
 import { Platform } from '@ionic/angular';
 import { Geolocation} from '@ionic-native/geolocation/ngx';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-location',
@@ -16,7 +17,8 @@ export class LocationPage implements OnInit {
   mapType
 
   constructor(public geoLocation:Geolocation,
-    public platform:Platform) {}
+    public platform:Platform,
+    public router:Router) {}
 
   async ngOnInit() {
 
@@ -34,8 +36,15 @@ export class LocationPage implements OnInit {
       this.loadMap())
   }
 
-  barsNearBy() {
-    /* Need to do */
+  home() {
+    this.router.navigate(['/home'])
+  }
+
+  sendLoc() {
+    console.log("Latitude: "+this.latPosition)
+    console.log("Longitude: "+this.longPosition)
+    alert("Coordinates: "+this.latPosition+" x "+this.longPosition+" sent to friend.")
+    this.router.navigate(['/home'])
   }
 
   async onTypeSelect(type) {

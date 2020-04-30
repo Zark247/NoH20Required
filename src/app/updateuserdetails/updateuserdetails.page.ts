@@ -70,11 +70,11 @@ export class UpdateuserdetailsPage implements OnInit {
     this.beverageService.updateUser(newValues);
 
 
-   this.goBack();
+   this.home();
   }
 
-  goBack(){
-    this.router.navigate(['/settings']);
+  home() {
+    this.router.navigate(['/home'])
   }
 
 

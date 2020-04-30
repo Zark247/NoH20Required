@@ -110,7 +110,7 @@ export class HomePage implements OnInit {
   current_drinks: any = 0;
   current_liquidoz:any = 0;
   current_timespent:any = 0;
-  min_bac :any = 0;one_bac :any = 0; two_bac :any = 0; five_bac :any = 0; ten_bac :any = 0;  
+  min_bac :any = 0;one_bac :any = 0; two_bac :any = 0; five_bac :any = 0; ten_bac :any = 0;
 
   current_user = [];
   current_user_data = {
@@ -124,14 +124,14 @@ export class HomePage implements OnInit {
     liquidOzs:null
   };
   db = firebase.firestore();
-  
 
-  constructor(private router: Router, private sidemenu: MenuController, 
+
+  constructor(private router: Router, private sidemenu: MenuController,
     public bserv: BeverageService, private cref : ChangeDetectorRef, private themeService: ThemeService ) {
       this.bserv.getObservable().subscribe((data)=>{
         console.log("User data received", data);
         this.current_user = this.bserv.getUserData();
-  
+
       })
 
       this.current_user = this.bserv.users;
@@ -157,7 +157,7 @@ export class HomePage implements OnInit {
 
       };
       this.current_username = this.current_user_data.name;
-      this.setData(); 
+      this.setData();
 
     }
     // this.updateChart();
@@ -178,7 +178,7 @@ export class HomePage implements OnInit {
         liquidOzs:info.liquidOzs
       };
       this.current_username = this.current_user_data.name;
-      this.setData(); 
+      this.setData();
 
     }
   }
@@ -209,10 +209,6 @@ export class HomePage implements OnInit {
     this.router.navigate(['/beverage-list']);
   }
 
-  toSearch() {
-    this.router.navigate(['/search']);
-  }
-
   toBevCart() {
     let self = this
     if(firebase.auth().currentUser == null) {
@@ -233,13 +229,19 @@ export class HomePage implements OnInit {
     } else {
       self.router.navigate(['/user']);
     }
-
   }
 
 
 
   toLocation(){
-    this.router.navigate(['location']);
+    let self = this
+    if(firebase.auth().currentUser == null) {
+      console.log("Not logged in, directing to log in.")
+      alert("Not logged in, directing to log in.")
+      self.router.navigate(["/login"])
+    } else {
+      self.router.navigate(['/location']);
+    }
   }
 
   toSettings(){
@@ -309,7 +311,7 @@ export class HomePage implements OnInit {
       let alcFloat = parseFloat(this.current_user_data.alc);
       let weightFloat = parseFloat(this.current_user_data.weight);
       let genderS = <string>(this.current_user_data.gender);
-      let timeFloat = parseFloat(this.current_user_data.timeDrinking); 
+      let timeFloat = parseFloat(this.current_user_data.timeDrinking);
 
       this.min_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 0.30);
       this.one_bac = this.bserv.getBAC(liqFloat, alcFloat, weightFloat, genderS, timeFloat + 1.00);
@@ -324,13 +326,10 @@ export class HomePage implements OnInit {
 
 
     }
-    
-
-
   }
 
   doRefresh(event){
-    
+
     if(firebase.auth().currentUser != null){
       this.bserv.dataRefresh();
       this.getCurrUser();
@@ -344,11 +343,11 @@ export class HomePage implements OnInit {
       // };
       this.current_user_data = this.bserv.getDrinkingInfo();
       // this.current_username = this.current_user_data.name;
-      this.setData();    
+      this.setData();
       // this.current_username = this.current_user_data.name;
 
     }
-    
+
     console.log('Begin async operation');
 
     setTimeout(() => {
@@ -366,11 +365,9 @@ export class HomePage implements OnInit {
   // enableDark(){
   //   this.themeService.enableDark();
   // }
- 
+
   // enableLight(){
   //   this.themeService.enableLight();
   // }
 
 }
-
-

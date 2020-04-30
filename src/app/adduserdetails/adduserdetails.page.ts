@@ -16,10 +16,13 @@ export class AdduserdetailsPage implements OnInit {
   gender="";
   phoneNumber="";
 
+  db = firebase.firestore()
   new_details_form:FormGroup
+  
   constructor(private router:Router, public formBuilder: FormBuilder, public bserv: BeverageService ) { }
 
   ngOnInit() {
+    console.log("ngOnInit")
     this.new_details_form = this.formBuilder.group({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -29,6 +32,9 @@ export class AdduserdetailsPage implements OnInit {
     })
   }
 
+  home() {
+    this.router.navigate(['/home'])
+  }
   
   addDetails(value){
     console.log("First Name: ", value.firstName)

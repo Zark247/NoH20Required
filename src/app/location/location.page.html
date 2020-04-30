@@ -5,7 +5,8 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="barsNearBy">Bars Near Me</ion-button>
+      <ion-button (click)="sendLoc()">Send Location</ion-button>
+      <ion-icon slot="icon-only" name="home" (click)="home()"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
