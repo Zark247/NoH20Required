@@ -4,7 +4,7 @@ import { MenuController } from '@ionic/angular';
 
 // import { Events } from '@ionic/angular';
 import * as firebase from 'firebase';
-
+import { ThemeService } from '../theme.service';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -12,12 +12,15 @@ import * as firebase from 'firebase';
 })
 export class HomePage {
 
-  constructor(private router: Router, private sidemenu: MenuController) {}
+  constructor(private router: Router, 
+    private sidemenu: MenuController,
+    private themeService: ThemeService) {}
 
   openFirst() {
     this.sidemenu.enable(true, 'first');
     this.sidemenu.open('first');
   }
+
 
   toBevList() {
     this.router.navigate(['/beverage-list']);
@@ -82,4 +85,19 @@ export class HomePage {
       alert("You are already logged in.")
     }
   }
+
+   // THIS WORKS FOR THE FIRST THEME SERVICE
+  // switchTheme(){
+  //   this.themeService.cycleTheme();
+  // }
+
+  // TRYING THIS FOR NEW STUFF
+
+  enableDark(){
+    this.themeService.enableDark();
+  }
+  enableLight(){
+    this.themeService.enableLight();
+  }
+
 }
