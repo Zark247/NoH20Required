@@ -103,6 +103,7 @@
       }
       
     ion-button{
+      --background: #9a9a9a;
       color: #ffffff;
     }
     }
@@ -112,6 +113,10 @@
     ion-item{
       --ion-item-background: #272727;
       --ion-text-color: #ffffff;
+
+      ion-button{
+        --background: #9a9a9a;
+      }
     }
 
   }

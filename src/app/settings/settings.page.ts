@@ -3,6 +3,7 @@ import { ThemeService } from '../theme.service';
 import { BeverageService } from '../beverage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as firebase from 'firebase';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
@@ -16,6 +17,7 @@ export class SettingsPage implements OnInit {
     private beverageService:BeverageService,
     private router:Router,
     private aRoute:ActivatedRoute,
+    public controller: AlertController,
   ) { }
 
   ngOnInit() {
@@ -51,5 +53,35 @@ export class SettingsPage implements OnInit {
         console.error("Error upon logging out: ", error)
      })
     }
+  }
+  async PopUp(){
+    let alert = await this.controller.create({
+      message: 'Do you want to delete your profile?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            console.log('Delete clicked');
+            this.deleteUser();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  deleteUser(){
+    var user = firebase.auth().currentUser;
+    user.delete().then(function() {
+      console.log(user.uid, " deleted");
+    }, function(error) {
+      console.log("error deleting user");
+    })
   }
 }
